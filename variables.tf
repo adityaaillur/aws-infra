@@ -7,6 +7,7 @@ variable "region" {
 variable "profile" {
   description = "The profile is the account where to deploy the infrastructure"
   type        = string
+  default = "dev"
 }
 
 variable "vpc_cidr" {
