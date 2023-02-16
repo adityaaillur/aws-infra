@@ -1,25 +1,25 @@
-name: Terraform Plan
+name: Terraform plan, apply, and destroy
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
+    types: [opened]
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.1.3
 
     - name: Terraform Init
       run: terraform init
@@ -29,14 +29,22 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -out=plan.tfplan
+      run: terraform plan -no-color -var="profile=dev"
 
-    - name: Approve Terraform Plan
-      if: github.event_name == 'pull_request' && github.event.action == 'opened'
-      uses: peter-evans/merge-pull-request@v3
+    - name: Comment Plan Output
+      if: ${{ github.actor != github.repository_owner }}
+      uses: unsplash/comment-on-pr@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        pull-request-number: ${{ github.event.pull_request.number }}
-        commit-message: Automated merge
-        commit-title: Automated merge
-        merge-method: merge
+        message: |
+          **Terraform Plan:**
+          ```
+          ${{ steps.plan.outputs.stdout }}
+          ```
+
+    - name: Terraform Apply
+      if: github.event.action == 'closed' && github.event.pull_request.merged == true
+      run: terraform apply -auto-approve -var="profile=dev"
+
+    - name: Terraform Destroy
+      if: github.event.pull_request.merged == true
+      run: terraform destroy -auto-approve -var="profile=dev"
