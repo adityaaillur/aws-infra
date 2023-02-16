@@ -1,13 +1,13 @@
 variable "region" {
   description = "The region to create the VPC in"
   type        = string
-  default     = "us-east-1"
+  # default     = "us-east-1"
 }
 
 variable "profile" {
   description = "The profile is the account where to deploy the infrastructure"
   type        = string
-  default = "dev"
+  # default = "dev"
 }
 
 variable "vpc_cidr" {
