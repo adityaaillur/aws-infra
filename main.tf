@@ -46,10 +46,24 @@ module "private_route_table" {
   private_route_table_cidr = var.private_route_table_cidr
 }
 
+resource "aws_security_group_rule" "allow_ssh" {
+  type        = "ingress"
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
+  security_group_id = aws_security_group.security_group.id
+  description = "Allow SSH traffic from the key-pair"
+  source_security_group_id = aws_security_group.security_group.id
+}
+resource "aws_key_pair" "deployer" {
+  key_name   = "ec2-ub"
+  public_key = var.ssh-key
+}
+
 resource "aws_security_group" "security_group" {
   name = "application"
   depends_on = [
-    module.vpc
+    aws_vpc.vpc
   ]
 
   ingress {
@@ -80,14 +94,15 @@ resource "aws_security_group" "security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id = aws_vpc.vpc_id
 }
 
 resource "aws_instance" "ec2_instance" {
   ami                     = var.ami_id
   instance_type           = var.instance_type
-  subnet_id               = module.public_subnets.public_subnet_ids[0]
+  subnet_id               = aws_subnet.public_subnets[0].id
   vpc_security_group_ids  = [aws_security_group.security_group.id]
+  key_name                = aws_key_pair.deployer.key_name
   disable_api_termination = false
   depends_on = [
     aws_security_group.security_group

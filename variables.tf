@@ -18,7 +18,7 @@ variable "vpc_cidr" {
 variable "availability_zones" {
   description = "The availability zones to create subnets in"
   type        = list(string)
-  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
 }
 
 variable "public_subnet_cidrs" {
@@ -45,21 +45,16 @@ variable "private_route_table_cidr" {
   default     = "0.0.0.0/0"
 }
 
-variable "app_port" {
-  type = number
-  default = 8000
-}
-
 variable "ami_id" {
   type        = string
   description = "ID of the AMI"
-  default     = "ami-0884890cdcc7611a2"
+  default     = "ami-0705487131e413559"
 }
 
 variable "instance_type" {
   type        = string
   description = "The CIDR block of the private route table"
-  default     = "t2.micro"
+  default     = "	t2.micro"
 }
 
 variable "instance_volume_size" {
@@ -73,4 +68,3 @@ variable "instance_volume_type" {
   description = "The CIDR block of the private route table"
   default     = "gp2"
 }
-
