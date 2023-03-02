@@ -1,48 +1,36 @@
+
 variable "region" {
-  description = "The region to create the VPC in"
   type        = string
-  # default     = "us-east-1"
+  description = "AWS region to use"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "VPC CIDR block"
 }
 
 variable "profile" {
-  description = "The profile is the account where to deploy the infrastructure"
   type        = string
-  # default = "dev"
+  description = "Profile to use for deployment"
 }
 
-variable "vpc_cidr" {
-  description = "The IP range for the VPC"
-  default     = "10.0.0.0/16"
+variable "public_subnet_count" {
+  type = number
 }
 
-variable "availability_zones" {
-  description = "The availability zones to create subnets in"
-  type        = list(string)
-  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
+variable "private_subnet_count" {
+  type = number
 }
 
-variable "public_subnet_cidrs" {
-  description = "The IP ranges for the public subnets"
-  type        = list(string)
-  default     = ["10.0.16.0/20", "10.0.32.0/20", "10.0.48.0/20"]
+variable "instance_type" {
+  type    = string
+  default = "t2.micro"
+
 }
 
-variable "private_subnet_cidrs" {
-  description = "The IP ranges for the private subnets"
-  type        = list(string)
-  default     = ["10.0.64.0/18", "10.0.128.0/18", "10.0.192.0/18"]
-}
-
-variable "public_route_table_cidr" {
-  type        = string
-  description = "The CIDR block of the public route table"
-  default     = "0.0.0.0/0"
-}
-
-variable "private_route_table_cidr" {
-  type        = string
-  description = "The CIDR block of the private route table"
-  default     = "0.0.0.0/0"
+variable "instance_volume_size" {
+  type    = number
+  default = 50
 }
 
 variable "app_port" {
@@ -51,26 +39,57 @@ variable "app_port" {
 }
 
 variable "ami_id" {
-  type        = string
-  description = "ID of the AMI"
-  default     = "ami-0551acabd8017cb32"
-}
-
-variable "instance_type" {
-  type        = string
-  description = "The CIDR block of the private route table"
-  default     = "t2.micro"
-}
-
-variable "instance_volume_size" {
-  type        = string
-  description = "The CIDR block of the private route table"
-  default     = "50"
+  type = string
 }
 
 variable "instance_volume_type" {
-  type        = string
-  description = "The CIDR block of the private route table"
-  default     = "gp2"
+  type    = string
+  default = "gp2"
 }
 
+variable "db_engine" {
+  type    = string
+  default = "mysql"
+}
+
+variable "db_instance" {
+  type    = string
+  default = "db.t3.micro"
+}
+
+variable "db_multi_az" {
+  type    = bool
+  default = false
+}
+
+variable "db_instance_identifier" {
+  type    = string
+  default = "csye6225"
+}
+
+variable "db_username" {
+  type    = string
+  default = "csye6225"
+}
+
+variable "db_password" {
+  type = string
+}
+
+variable "db_name" {
+  type    = string
+  default = "csye6225"
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  type = string
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  type = string
+}
+
+locals {
+  public_subnets  = [for i in range(1, var.public_subnet_count + 1) : cidrsubnet(var.vpc_cidr_block, 8, i)]
+  private_subnets = [for i in range(1, var.private_subnet_count + 1) : cidrsubnet(var.vpc_cidr_block, 8, i + var.private_subnet_count)]
+}
