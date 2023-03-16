@@ -81,12 +81,14 @@ variable "db_name" {
   default = "csye6225"
 }
 
-variable "AWS_ACCESS_KEY_ID" {
-  type = string
+variable "zone_id" {
+  type    = string
+  default = "Z05367462DDGEHCBH5YJ2"
 }
 
-variable "AWS_SECRET_ACCESS_KEY" {
-  type = string
+variable "a_record_name" {
+  type    = string
+  default = "dev.illur.me"
 }
 
 locals {
