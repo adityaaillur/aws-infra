@@ -83,12 +83,10 @@ variable "db_name" {
 
 variable "zone_id" {
   type    = string
-  default = "Z05367462DDGEHCBH5YJ2"
 }
 
 variable "a_record_name" {
   type    = string
-  default = "dev.illur.me"
 }
 
 locals {
