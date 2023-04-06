@@ -81,14 +81,19 @@ variable "db_name" {
   default = "csye6225"
 }
 
+variable "record_name" {
+  type    = string
+  default = "demo.illur.me"
+}
+
 variable "zone_id" {
   type    = string
   default = "Z05638982ZMYETUQ1BHCS"
 }
 
-variable "a_record_name" {
-  type    = string
-  default = "demo.illur.me"
+variable "ami_owner" {
+  type    = number
+  default = 032083062214
 }
 
 locals {
