@@ -7,19 +7,21 @@ data "template_file" "user_data" {
     db_host       = aws_db_instance.main.endpoint
     db_name       = aws_db_instance.main.db_name
     aws_s3_bucket = aws_s3_bucket.private.id
-    aws_region = var.region
+    aws_region    = var.region
   }
 }
 
-# data "aws_ami" "custom_ami" {
-#   owners      = [var.ami_owner]
-#   most_recent = true
-# }
+data "aws_ami" "custom_ami" {
+  executable_users = ["self"]
+  most_recent        = true
+}
 
 resource "aws_launch_template" "asg_launch_template" {
   name                    = "asg_launch_config"
-  image_id                = var.ami_id
+  image_id                = data.aws_ami.custom_ami.id
   instance_type           = var.instance_type
+  # key_name                = "ec2"
+  disable_api_termination = true
   iam_instance_profile {
     name = aws_iam_instance_profile.EC2-CSYE6225_instance_profile.name
   }
@@ -37,6 +39,8 @@ resource "aws_launch_template" "asg_launch_template" {
     ebs {
       volume_size = var.instance_volume_size
       volume_type = var.instance_volume_type
+      kms_key_id  = aws_kms_key.ebs_kms.arn
+      encrypted   = true
     }
   }
 }

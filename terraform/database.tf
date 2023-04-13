@@ -28,5 +28,7 @@ resource "aws_db_instance" "main" {
   allocated_storage      = 10
   vpc_security_group_ids = [aws_security_group.db.id]
   skip_final_snapshot    = true
+  kms_key_id               = aws_kms_key.rds_encryption_key.arn	
+  storage_encrypted        = true
 
 }

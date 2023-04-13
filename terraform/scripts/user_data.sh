@@ -1,5 +1,4 @@
-    #!/bin/bash
-
+#!/bin/bash
     echo --start--
     echo "[Unit]
     Description=Webapp Service
@@ -22,5 +21,7 @@
     WantedBy=multi-user.target" > /etc/systemd/system/webapp.service
     sudo systemctl daemon-reload
     sudo systemctl start webapp.service
-    sudo systemctl enable webapp.service
+    sudo systemctl enable webapp.service 
+    sudo systemctl start amazon-cloudwatch-agent.service
+    sudo systemctl enable amazon-cloudwatch-agent.service
     echo --end--

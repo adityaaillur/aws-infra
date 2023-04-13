@@ -38,9 +38,6 @@ variable "app_port" {
   default = 8000
 }
 
-variable "ami_id" {
-  type = string
-}
 
 variable "instance_volume_type" {
   type    = string
@@ -84,16 +81,6 @@ variable "db_name" {
 variable "record_name" {
   type    = string
   default = "demo.illur.me"
-}
-
-variable "zone_id" {
-  type    = string
-  default = "Z05638982ZMYETUQ1BHCS"
-}
-
-variable "ami_owner" {
-  type    = number
-  default = 032083062214
 }
 
 locals {
