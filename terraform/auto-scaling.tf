@@ -39,7 +39,7 @@ resource "aws_launch_template" "asg_launch_template" {
     ebs {
       volume_size = var.instance_volume_size
       volume_type = var.instance_volume_type
-      kms_key_id  = aws_kms_key.ebs_kms.arn
+      kms_key_id  = aws_kms_key.ebs-kms.arn
       encrypted   = true
     }
   }
