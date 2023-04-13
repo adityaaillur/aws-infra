@@ -1,6 +1,6 @@
 # AWS Infra
 
-Assignment #03 
+Assignment #09
 
 ## Terraform Deployment for Cloud Infrastructure
 
@@ -51,3 +51,5 @@ This module creates a route table for the private subnets and associates it with
 The public subnets are each a `/20` block, allowing up to `4,094` IP addresses for each subnet, and the private subnets are each a `/18` block, which allows for a larger number of IP addresses and more potential for additional subnetting. 
 
 CIDR blocks follow the recommended practice of keeping the IP addresses of the public and private subnets separate from each other.
+
+Command to import Certificate: "aws acm import-certificate --certificate fileb://certificate.crt --private-key fileb://private.key --region us-east-1 --profile demo"
