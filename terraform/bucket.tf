@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "private" {
-  bucket_prefix = "${var.profile}-002776756-"
+  bucket_prefix = "${var.profile}-002766753-"
   force_destroy = true
 }
 
